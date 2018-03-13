@@ -1,0 +1,10 @@
+---
+
+- hosts: DO
+  remote_user: root      
+  tasks:
+    - name: install vim
+      yum: name=vim state=latest
+
+    - name: install epel-release
+      yum: name=epel-release state=installed
