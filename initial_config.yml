@@ -1,0 +1,29 @@
+---
+- hosts: DO
+  remote_user: root
+  tasks:
+
+    - name: Update all packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install Development Tools
+      yum:
+        name: "@Development tools"
+        state: present
+    - name: Install all other utils
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - wget
+        - ntp
+        - vim
+        - firewalld
+        - epel-release
+        - pciutils
+        - tree
+        - yum-utils
+
+
