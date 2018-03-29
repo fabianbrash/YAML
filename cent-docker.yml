@@ -1,0 +1,25 @@
+---
+- hosts: cent_docker
+  remote_user: root
+  tasks:
+
+    - name: Add docker-ce repository
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
+
+
+    - name: Install docker-ce
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - device-mapper-persistent-data
+        - lvm2
+        - docker-ce
+
+    - name: Enable and start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes  
