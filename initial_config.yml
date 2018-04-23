@@ -25,5 +25,6 @@
         - pciutils
         - tree
         - yum-utils
+        - bind-utils
 
 
