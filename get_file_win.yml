@@ -1,9 +1,0 @@
----
-- hosts: windows
-
-  tasks:
-
-    - name: Download latest VMware tools from minio
-      win_get_url:
-        url: http://IP or DNS/vmware/VMware-tools-10.2.5-8068406-x86_64.exe
-        dest: C:\Users\Administrator\Downloads\VMware-tools-10.2.5-8068406-x86_64.exe
