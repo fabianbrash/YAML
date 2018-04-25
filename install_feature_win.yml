@@ -1,0 +1,16 @@
+---
+- hosts: windows
+
+  tasks:
+
+  - name: Install Web-Server and Mgmt Tools
+    win_feature:
+      name: Web-Server
+      include_management_tools: True
+    register: win_feature
+
+  - name: Reboot if it's required
+    win_reboot:
+    when: win_feature.reboot_required
+
+   
