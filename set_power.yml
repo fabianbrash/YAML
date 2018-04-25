@@ -1,0 +1,10 @@
+---
+- hosts: windows
+
+  tasks:
+
+    - name: Set power plan to High-Performance
+      win_power_plan:
+        name: high performance
+
+
