@@ -1,0 +1,54 @@
+---
+- hosts: windows
+
+  tasks:
+
+  - name: Install IIS and all features required for .NET APPS
+    win_feature:
+      name:
+      - Web-Server
+      - Web-Common-Http
+      - Web-Default-Doc
+      - Web-Dir-Browsing
+      - Web-Http-Errors
+      - Web-Static-Content
+      - Web-Http-Redirect
+      - Web-Health
+      - Web-Http-Logging
+      - Web-Performance
+      - Web-Stat-Compression
+      - Web-Dyn-Compression
+      - Web-Security
+      - Web-Filtering
+      - Web-Basic-Auth
+      - Web-Client-Auth
+      - Web-Digest-Auth
+      - Web-Cert-Auth
+      - Web-IP-Security
+      - Web-Url-Auth
+      - Web-Windows-Auth
+      - Web-App-Dev
+      - Web-Net-Ext
+      - Web-Net-Ext45
+      - Web-AppInit
+      - Web-ASP
+      - Web-Asp-Net
+      - Web-Asp-Net45
+      - Web-CGI
+      - Web-ISAPI-Ext
+      - Web-ISAPI-Filter
+      - Web-Mgmt-Tools
+      - Web-Mgmt-Console
+      - Web-Scripting-Tools
+      - Web-Mgmt-Service
+      - WAS
+      - WAS-Process-Model
+      - WAS-NET-Environment
+    register: win_feature
+
+  - name: Reboot if it's required
+    win_reboot:
+    when: win_feature.reboot_required
+
+
+    
