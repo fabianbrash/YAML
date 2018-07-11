@@ -1,0 +1,16 @@
+---
+
+- hosts: windows
+
+  tasks:
+
+  - name: Copy our update from a web server here we are using an S3 compatible platform, minio
+    win_get_url:
+      url: https://minio.enterprise.org/windows/AMD64_X86-all-windows10.0-kb4284833-x64_eb8d1b6306fe77caefec2109844be73ffc7587f6.msu
+      dest: C:\Temp\
+      remote_src: yes
+
+  - name: Install 18-06 Cumulative update KB4284833
+    win_hotfix:
+      source: C:\Temp\AMD64_X86-all-windows10.0-kb4284833-x64_eb8d1b6306fe77caefec2109844be73ffc7587f6.msu
+      state: present
