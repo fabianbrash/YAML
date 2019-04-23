@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  umds67:
+    image: fabianbrash/umds67:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - "umds_config:/usr/local/vmware-umds"
+      - "umds_data:/umds-store67"
+    networks:
+      - umdsnet
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  umds_config:
+    external: true
+  umds_data:
+    external: true
+
+networks:
+  umdsnet:
