@@ -5,6 +5,8 @@ metadata:
   labels:
     app:  nginx
 spec:
+  type:  NodePort
+  #type:  LoadBalancer
   ports:
   - port:  80
     protocol:  TCP
