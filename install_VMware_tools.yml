@@ -1,0 +1,17 @@
+---
+
+- hosts: windows
+
+  tasks:
+
+  - name: Copy our update from a web server here we are using an S3 compatible platform, minio
+    win_get_url:
+      url: https://minio.enterprise.org/vmware/tools/VMware-tools-10.3.10-12406962-x86_64.exe
+      dest: C:\Temp\
+      remote_src: yes
+
+  - name: Install VMware tools
+    win_package:
+      path: C:\Temp\VMware-tools-10.3.10-12406962-x86_64.exe
+      arguments: /s/v"/qn"
+      state: present
