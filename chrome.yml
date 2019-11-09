@@ -1,0 +1,11 @@
+---
+
+- hosts: windows
+
+  tasks:
+    - name: Install Chrome
+      win_chocolatey:
+        name: googlechrome
+        version: 78.0.3904.97
+        source: http://40.84.46.0:8624/nuget/Internal/
+        state: present
