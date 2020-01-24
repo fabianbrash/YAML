@@ -27,12 +27,12 @@ kind: Service
 metadata:
   name: ghost-service
 spec:
+type: NodePort
   selector:
     app: ghost
   ports:
   - protocol: TCP
     port: 2368
-    TargetPort: 2368
     
   
     
