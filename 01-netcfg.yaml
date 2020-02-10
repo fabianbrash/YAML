@@ -1,0 +1,16 @@
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      # Ser IP address & subnet mask
+      addresses: [10.10.1.5/24]
+      # Set default gateway
+      gateway4: 10.10.1.1
+      nameservers:
+        # Set DNS name servers
+        addresses: [10.10.1.1,8.8.8.8]
+      dhcp6: no
