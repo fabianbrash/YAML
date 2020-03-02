@@ -1,0 +1,12 @@
+----
+- hosts: k8s
+  remote_user: root
+  tasks:
+  - name: Update our cache if it's more than 3600 seconds out-of-date
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+  - name: Update all packages
+    apt:
+      name: "*"
+      state: latest
