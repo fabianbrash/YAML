@@ -1,0 +1,15 @@
+---
+- hosts: k8s
+  remote_user: root
+  tasks:
+  - name: Stop and disable firewalld
+    systemd:
+      name: firewalld
+      state: stopped
+      enabled: false
+  - sysctl:
+      name: net.ipv4.ip_forward
+      value: '1'
+      state: present
+      sysctl_set: yes
+      reload: yes
