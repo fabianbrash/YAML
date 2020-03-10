@@ -8,6 +8,16 @@
       state: stopped
       enabled: false
       when: ansible_facts[distribution'] == "CentOS"
+  - name: install nfs-utils on centOS systems
+    yum:
+      name: "nfs-utils"
+      state: latest
+      when: ansible_facts[distribution'] == "CentOS"
+  - name: install nfs-common on debian systems i.e. ubuntu
+    apt:
+    name: "nfs-common"
+    state: latest
+    when: ansible_facts['os_family'] == "Debian"
   - name: disable ufw
     ufw:
       state: disabled
