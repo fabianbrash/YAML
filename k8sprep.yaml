@@ -7,6 +7,11 @@
       name: firewalld
       state: stopped
       enabled: false
+  - name: disable ufw
+    ufw:
+      state: disabled
+  - name: Disable swap
+    shell: swapoff -a
   - sysctl:
       name: net.ipv4.ip_forward
       value: '1'
