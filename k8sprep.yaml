@@ -7,9 +7,11 @@
       name: firewalld
       state: stopped
       enabled: false
+      when: ansible_facts[distribution'] == "CentOS"
   - name: disable ufw
     ufw:
       state: disabled
+      when: ansible_facts['os_family'] == "Debian"
   - name: Disable swap
     shell: swapoff -a
   - sysctl:
