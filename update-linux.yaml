@@ -1,0 +1,23 @@
+----
+- hosts: k8s
+  remote_user: root
+  tasks:
+  - name: Update our cache if it's more than 3600 seconds out-of-date only on Debian systems
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+      when: ansible_facts['os_family'] == "Debian"
+  - name: Update all packages on Debian systems
+    apt:
+      name: "*"
+      state: latest
+      when: ansible_facts['os_family'] == "Debian"
+      
+  - name: Update our cache and update all packages on CentOS 7 based systems
+    yum:
+      name: "*"
+      state: latest
+      update_cache: true
+      when: (ansible_facts['os_family'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+    
+    
