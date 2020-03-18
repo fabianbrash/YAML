@@ -6,12 +6,12 @@
     apt:
       update_cache: yes
       cache_valid_time: 3600
-    when: ansible_facts['distribution'] == "Debian"
+    when: ansible_facts['os_family'] == "Debian"
   - name: Update all packages on Debian systems
     apt:
       name: "*"
       state: latest
-    when: ansible_facts['distribution'] == "Debian"
+    when: ansible_facts['os_family'] == "Debian"
       
   - name: Update our cache and update all packages on CentOS 7 based systems
     yum:
