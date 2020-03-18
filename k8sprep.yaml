@@ -7,12 +7,12 @@
       name: firewalld
       state: stopped
       enabled: false
-      when: ansible_facts[distribution'] == "CentOS"
+      when: ansible_facts['distribution'] == "CentOS"
   - name: install nfs-utils on centOS systems
     yum:
       name: "nfs-utils"
       state: latest
-      when: ansible_facts[distribution'] == "CentOS"
+      when: ansible_facts['distribution'] == "CentOS"
   - name: install nfs-common on debian systems i.e. ubuntu
     apt:
     name: "nfs-common"
