@@ -13,9 +13,24 @@
       name: "nfs-utils"
       state: latest
     when: ansible_facts['distribution'] == "CentOS"
+  - name: install python3 on centos 7.x
+    yum:
+      name: "python3"
+      state: latest
+    when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7")
+  - name: Install growpart
+    yum:
+      name: "cloud-utils-growpart"
+      state: latest
+    when: ansible_facts['distribution'] == "CentOS"
   - name: install nfs-common on debian systems i.e. ubuntu
     apt:
       name: "nfs-common"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install growpart
+    apt:
+      name: "cloud-guest-utils"
       state: latest
     when: ansible_facts['os_family'] == "Debian"
   - name: disable ufw
