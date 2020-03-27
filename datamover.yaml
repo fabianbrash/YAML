@@ -6,7 +6,8 @@ metadata:
 spec:
   containers:
   - name: datamover
-    image: alpine
+    image: fabianbrash/tools:1.0
+    imagePullPolicy: Always
     command: ["/bin/ash"]
     args: ["-c", "sleep 10000"]
     resources:
