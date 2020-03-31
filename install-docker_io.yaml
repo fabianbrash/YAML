@@ -1,0 +1,9 @@
+---
+- hosts: k8s
+  remote_user: root
+  tasks:
+  - name: Install docker.io on Debian based distros
+    apt:
+      name: "docker.io"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
