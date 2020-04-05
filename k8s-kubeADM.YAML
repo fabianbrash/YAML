@@ -1,0 +1,42 @@
+---
+- hosts: k8s
+  remote_user: root
+  tasks:
+  - name: Stop and disable firewalld
+    systemd:
+      name: firewalld
+      state: stopped
+      enabled: false
+    when: ansible_facts['distribution'] == "CentOS"
+  - name: install nfs-utils on centOS systems
+    yum:
+      name: "nfs-utils"
+      state: latest
+    when: ansible_facts['distribution'] == "CentOS"
+  - name: Install growpart
+    yum:
+      name: "cloud-utils-growpart"
+      state: latest
+    when: ansible_facts['distribution'] == "CentOS"
+  - name: install nfs-common on debian systems i.e. ubuntu
+    apt:
+      name: "nfs-common"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install growpart
+    apt:
+      name: "cloud-guest-utils"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+  - name: disable ufw
+    ufw:
+      state: disabled
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Disable swap
+    shell: swapoff -a
+  - sysctl:
+      name: net.ipv4.ip_forward
+      value: '1'
+      state: present
+      sysctl_set: yes
+      reload: yes
