@@ -32,7 +32,17 @@
     apt:
       name: "policycoreutils"
       state: latest
-    when: ansible_facts['os_family'] = "Debian"
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install k8s deps for ubuntu
+    apt:
+      name: "apt-transport-https"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install curl
+    apt:
+      name: "curl"
+      state: latest
+    when: ansible_facts['os_family'] == "Debian"
   - name: Enable docker
     systemd:
       name: docker
