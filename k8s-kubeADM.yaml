@@ -71,4 +71,4 @@
       state: present
       sysctl_set: yes
       reload: yes
-    when: ansible_facts['distribution'] == CentOS
+    when: ansible_facts['distribution'] == "CentOS"
