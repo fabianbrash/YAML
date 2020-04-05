@@ -28,6 +28,11 @@
       name: "cloud-guest-utils"
       state: latest
     when: ansible_facts['os_family'] == "Debian"
+  - name: Enable docker
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
   - name: disable ufw
     ufw:
       state: disabled
