@@ -50,3 +50,15 @@
       state: present
       sysctl_set: yes
       reload: yes
+  - sysctl:
+      name: net.bridge.bridge-nf-call-ip6tables
+      value: '1'
+      state: present
+      sysctl_set: yes
+  - sysctl:
+      name: net.bridge.bridge-nf-call-iptables
+      value: '1'
+      state: present
+      sysctl_set: yes
+      reload: yes
+    when: ansible_facts['distribution'] == CentOS
