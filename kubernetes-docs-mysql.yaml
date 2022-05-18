@@ -45,7 +45,7 @@ spec:
         tier: mysql
     spec:
       containers:
-      - image: harbor.fbclouddemo.us/publicimages/mysql@sha256:368c1258fb7330eece5a0fbe2c9801d666bb0f26d7a82c78c431fbcb8f5fd191 #mysql:5.7
+      - image: harbor.fbclouddemo.us/publicimages/mariadb@sha256:a252cb5322f288f0bbba2c289828db981ed4df92ecc35bce77881ec774982a5a #mysql:5.7
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
