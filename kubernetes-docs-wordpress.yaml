@@ -45,7 +45,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: harbor.fbclouddemo.us/publicimages/wordpress@sha256:bb69340c1bea2a38bab12bdd9b521319e985731f058dfcbf6f22eb8df0391a9d
+      - image: harbor.fbclouddemo.us/publicimages/wordpress@sha256:df81a77ce541ac10d36d507adf72fec907e0373333f64da767578faf5e95555c
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
