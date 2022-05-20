@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: tools
+  name: tools
+spec:
+  containers:
+  - image: harbor.fbclouddemo.us/publicimages/ubuntu-tools-focal@sha256:afa2c64fe8f029fe66b6dd88f0c307cb344e9fa24de4e64ca715038e94f02394
+    name: tools
+    command:
+    - sleep
+    - "90000"
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
