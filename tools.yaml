@@ -7,7 +7,7 @@ metadata:
   name: tools
 spec:
   containers:
-  - image: harbor.fbclouddemo.us/publicimages/ubuntu-tools-focal@sha256:afa2c64fe8f029fe66b6dd88f0c307cb344e9fa24de4e64ca715038e94f02394
+  - image: harbor.fbclouddemo.us/publicimages/ubuntu-tools-focal@sha256:91db68c3f2ef07151fd4f3674c857420107822d0f15f353e6bf3e061537dbaff
     name: tools
     command:
     - sleep
