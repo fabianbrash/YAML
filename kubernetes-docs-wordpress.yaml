@@ -59,7 +59,7 @@ spec:
               key: password
         ports:
         - containerPort: 80
-          name: wordpress
+          name: http-wordpress
         volumeMounts:
         - name: wordpress-persistent-storage
           mountPath: /var/www/html
