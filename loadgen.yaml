@@ -1,0 +1,41 @@
+---
+apiVersion: v1 
+kind: Service
+metadata:
+  name: loadgen-svc
+  labels:
+    app: loadgen
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: loadgen
+  clusterIP: None
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: loadgen
+  name: loadgen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadgen
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: loadgen
+    spec:
+      containers:
+      - image: harbor.fbclouddemo.us/publicimages/ubuntu-tools-focal@sha256:91db68c3f2ef07151fd4f3674c857420107822d0f15f353e6bf3e061537dbaff
+        name: loadgen
+        command: ["/bin/bash"]
+        args: ["-c", "while true; do siege http://wordpress.wp-tsm.fbclouddemo.io -r50 -c50; sleep 90000; done"]
+        resources: {}
+status: {}
