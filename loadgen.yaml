@@ -36,6 +36,6 @@ spec:
       - image: harbor.fbclouddemo.us/publicimages/ubuntu-tools-focal@sha256:91db68c3f2ef07151fd4f3674c857420107822d0f15f353e6bf3e061537dbaff
         name: loadgen
         command: ["/bin/bash"]
-        args: ["-c", "while true; do siege http://wordpress.wp-tsm.fbclouddemo.io -r50 -c50; sleep 90000; done"]
+        args: ["-c", "while true; do siege http://wordpress.default.svc -r50 -c50; sleep 90000; done"]
         resources: {}
 status: {}
