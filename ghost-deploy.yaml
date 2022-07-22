@@ -49,11 +49,11 @@ kind: Service
 metadata:
   name: ghost-service
 spec:
-#type: NodePort
- type: LoadBalancer
- ports:
- - protocol: TCP
-   port: 80
-   targetPort: 2368
- selector:
-   app: ghost
+  #type: NodePort
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 2368
+  selector:
+    app: ghost
