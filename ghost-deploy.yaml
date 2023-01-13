@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: ghost
-        image: ghost:5.4.1-alpine
+        image: ghost:5.29.0-alpine
         ports:
         - containerPort: 2368
         volumeMounts:
