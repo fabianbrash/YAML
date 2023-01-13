@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: ghost
-        image: ghost:5.29.0-alpine
+        image: ghost:5.8.2-alpine  # last version that supports sql3lite, any newer and it uses mysql by default
         ports:
         - containerPort: 2368
         volumeMounts:
