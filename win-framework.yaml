@@ -21,6 +21,10 @@ spec:
       containers:
       - image: harbor.fbclouddemo.us/windows/mcr.microsoft.com/dotnet/framework/samples@sha256:7fe9ebf1dfe8cb71232b9e196720c5fd34777cfff0e0ecb3be32eb00dee89ef8
         name: win-framework
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "1Gi"
       nodeSelector:
         kubernetes.io/os: windows
       tolerations:
