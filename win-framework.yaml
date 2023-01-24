@@ -5,6 +5,7 @@ metadata:
   labels:
     app: win-framework
   name: win-framework
+  namespace: framework-apps
 spec:
   replicas: 3
   selector:
