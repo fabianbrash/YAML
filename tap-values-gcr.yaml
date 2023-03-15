@@ -1,0 +1,71 @@
+# This file is geared towards using GCR artifact repository for TAP
+shared:
+  ingress_domain: "onprem.alexanderbrash.net"
+  #ingress_issuer:  Optional, can denote a cert-manager.io/v1/ClusterIssuer of your choice. Defaults to "tap-ingress-selfsigned".
+
+  #image_registry:
+    #project_path: "us-east4-docker.pkg.dev/my-project"
+    #username: "_json_key"
+    #password: 'my_password'
+cnrs:
+  domain_name: onprem.alexanderbrash.net
+  domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
+ceip_policy_disclosed: true # Installation fails if this is not set to true. Not a string.
+
+#The above keys are minimum numbers of entries needed in tap-values.yaml to get a functioning TAP Full profile installation.
+
+#Below are the keys which may have default values set, but can be overridden.
+
+profile: full # Can take iterate, build, run, view.
+
+#supply_chain: basic  #Can take testing, testing_scanning.
+supply_chain: testing_scanning
+
+#ootb_supply_chain_basic:  #Based on supply_chain set above, can be changed to ootb_supply_chain_testing, ootb_supply_chain_testing_scanning.
+ootb_supply_chain_testing_scanning:
+  registry:
+    server: "us-east4-docker.pkg.dev" # Takes the value from shared section above by default, but can be overridden by setting a different value.
+    repository: "my-project/tkgs-tap/supply-chain" # Takes the value from shared section above by default, but can be overridden by setting a different value.
+  gitops:
+    ssh_secret: "" # Takes "" as value by default; but can be overridden by setting a different value.
+
+contour:
+  envoy:
+    service:
+      type: LoadBalancer # This is set by default, but can be overridden by setting a different value.
+
+buildservice:
+  kp_default_repository: "us-east4-docker.pkg.dev/my-project/tkgs-tap/build-service"
+  kp_default_repository_username: "_json_key"
+  kp_default_repository_password: |
+    {
+     key_value goes here, or if using harbor just your password in quotes
+    }
+  #'$(echo $service_account_key)'
+  #kp_default_repository_password: 'my_password'
+  #exclude_dependencies: true
+tap_gui:
+  service_type: ClusterIP # If the shared.ingress_domain is set as above, this must be set to ClusterIP.
+  app_config:
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/fabianbrash/tap-catalogue/blob/main/catalog-info.yaml
+    app: 
+      baseURL: https://tap-gui.onprem.alexanderbrash.net
+    backend:
+      baseURL: https://tap-gui.onprem.alexanderbrash.net
+      cors:
+        origin: https://tap-gui.onprem.alexanderbrash.net
+
+metadata_store:
+  ns_for_export_app_cert: "*"
+  app_service_type: ClusterIP # Defaults to LoadBalancer. If shared.ingress_domain is set earlier, this must be set to ClusterIP.
+
+scanning:
+  metadataStore:
+    url: "" # Configuration is moved, so set this string to empty.
+
+grype:
+  namespace: "default"
+  targetImagePullSecret: "tap-registry"
