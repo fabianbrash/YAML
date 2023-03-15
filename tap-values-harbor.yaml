@@ -1,0 +1,113 @@
+profile: full
+
+contour:
+  envoy:
+    service:
+      type: LoadBalancer
+
+cnrs:
+  domain_name: tap-lab.alexanderbrash.net
+  domain_template: "{{.Name}}-{{.Namespace}}.{{.Domain}}"
+
+shared:
+  ingress_domain: tap-lab.alexanderbrash.net
+
+#excluded_packages:
+#- eventing.tanzu.vmware.com
+
+ceip_policy_disclosed: true # Installation fails if this is not set to true. Not a string.
+buildservice:
+  kp_default_repository: "harbor.fbclouddemo.us/gke-tap-new/build-service"
+  kp_default_repository_secret:
+    name: kp-default-repository-creds
+    namespace: tap-install
+  #kp_default_repository_username: "myuser"
+  #kp_default_repository_password: "mypassword"
+  exclude_dependencies: true
+
+#supply_chain: basic
+supply_chain: testing_scanning
+
+#ootb_supply_chain_basic:
+ootb_supply_chain_testing_scanning:
+  registry:
+    server: "harbor.fbclouddemo.us"
+    repository: "gke-tap-new/supply-chain"
+  gitops:
+    ssh_secret: ""
+
+tap_gui:
+  service_type: ClusterIP
+  #ingressEnabled: "true"
+  #ingressDomain: "tap-lab.alexanderbrash.net"
+  tls:
+    secretName: tap-lab-alexbrash-net-wldcrd-23
+    namespace: tls-certs
+  app_config:
+    proxy:
+      /metadata-store:
+        target: https://metadata-store-app.metadata-store:8443/api/v1
+        changeOrigin: true
+        secure: false
+        headers:
+          Authorization: "Bearer YOUR_TOKEN_GOES_HERE"
+          X-Custom-Source: project-star
+    techdocs:
+      builder: 'external'
+      publisher:
+        type: 'awsS3'
+        awsS3:
+          bucketName: 'fb-tap-techdoc2'
+          credentials:
+            accessKeyId: 'ADD_YOUR_VALUES_HERE'
+            secretAccessKey: 'ADD_YOUR_VALUES_HERE'
+          region: 'us-east-1'
+          s3ForcePathStyle: false
+    auth:
+      allowGuestAccess: false
+      environment: development
+      providers:
+        microsoft:
+          development:
+            clientId: "ADD_YOUR_VALUES_HERE"
+            clientSecret: "ADD_YOUR_VALUES_HERE"
+            tenantId: "ADD_YOUR_VALUES_HERE"
+    app:
+      baseUrl: https://tap-gui.tap-lab.alexanderbrash.net
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/badraoul/tap-test/blob/main/blank/catalog-info.yaml
+    backend:
+      baseUrl: https://tap-gui.tap-lab.alexanderbrash.net
+      cors:
+        origin: https://tap-gui.tap-lab.alexanderbrash.net
+      database: #This is required to integrate tap-gui with external db
+        client: pg
+        connection:
+          host: pg-db.dbservices.svc.cluster.local
+          port: 5432
+          user: postgres
+          password: ADD_YOUR_VALUES_HERE
+          #ssl: {rejectUnauthorized: false} # Set to true if using TLS/SSL
+    
+
+metadata_store:
+  ns_for_export_app_cert: "*"
+  app_service_type: ClusterIP
+
+scanning:
+  metadataStore:
+    url: "" # Deactivate embedded integration since it's deprecated
+
+grype:
+  namespace: "default" # (optional) Defaults to default namespace.
+  targetImagePullSecret: "tap-registry"
+  #metadataStore:
+    #url: ""  (optional) Defaults to "https://metadata-store-app.metadata-store.svc.cluster.local:8443"
+    #caSecret:
+      #name: ""  (optional) Defaults to "app-tls-cert"
+      #importFromNamespace: "metadata-store"  (optional) Defaults to "metadata-store"
+    #authSecret:  (optional) Defaults all values to empty. Only for multicluster
+      #name: ""
+      #importFromNamespace: ""
