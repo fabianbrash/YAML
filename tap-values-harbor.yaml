@@ -87,7 +87,7 @@ tap_gui:
         connection:
           host: pg-db.dbservices.svc.cluster.local
           port: 5432
-          user: postgres
+          user: pgadmin #I'm using Tanzu SQL w/Postgres Operator for all my postgres needs
           password: ADD_YOUR_VALUES_HERE
           #ssl: {rejectUnauthorized: false} # Set to true if using TLS/SSL
     
