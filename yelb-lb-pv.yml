@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
       - name: yelb-ui
-        image:  mreferre/yelb-ui:0.5
+        image: us-docker.pkg.dev/bfabian-gcp/publicimages/yelb/yelb-ui:0.5
         ports:
         - containerPort: 80
 ---
@@ -108,7 +108,7 @@ spec:
     spec:
       containers:
       - name: redis-server
-        image: redis:4.0.2
+        image: us-docker.pkg.dev/bfabian-gcp/publicimages/yelb/redis:4.0.2
         ports:
         - containerPort: 6379
 
@@ -149,7 +149,7 @@ spec:
     spec:
       containers:
       - name: yelb-db
-        image:  mreferre/yelb-db:0.5 #postgres
+        image: us-docker.pkg.dev/bfabian-gcp/publicimages/yelb/yelb-db:0.5 #postgres
         env:
           - name: PGDATA
             valueFrom:
@@ -191,6 +191,6 @@ spec:
     spec:
       containers:
       - name: yelb-appserver
-        image:  mreferre/yelb-appserver:0.5
+        image: us-docker.pkg.dev/bfabian-gcp/publicimages/yelb/yelb-appserver:0.5
         ports:
         - containerPort: 4567
