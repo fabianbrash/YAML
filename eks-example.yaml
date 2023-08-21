@@ -1,0 +1,36 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: tap-eks-2
+  region: us-east-2
+  version: "1.26"
+
+iam:
+  withOIDC: true
+
+nodeGroups:
+  - name: tap-workers
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        ebs: true
+        fsx: true
+        efs: true
+        awsLoadBalancerController: true
+        #albIngress: true
+        xRay: true
+        cloudWatch: true
+    instanceType: t3.xlarge
+    desiredCapacity: 6
+    volumeSize: 200
+    containerRuntime: containerd
+    ssh:
+      allow: true
+addons:
+- name: aws-ebs-csi-driver
+  #version: 1.7.5 optional
