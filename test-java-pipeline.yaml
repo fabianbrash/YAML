@@ -23,7 +23,8 @@ spec:
           - name: source-revision
         steps:
           - name: test
-            image: bellsoft/liberica-openjdk-alpine:11
+            #image: bellsoft/liberica-openjdk-alpine:11
+            image: us-docker.pkg.dev/bfabian-gcp/publicimages/bellsoft-liberica-openjdk-alpine:11
             script: |-
               cd `mktemp -d`
               wget -qO- $(params.source-url) | tar xvz -m
@@ -39,7 +40,8 @@ spec:
               - mountPath: /var/run/
                 name: dind-socket
         sidecars:
-          - image: docker:20.10.17-dind
+          #- image: docker:20.10.17-dind
+          - image: us-docker.pkg.dev/bfabian-gcp/publicimages/docker:20.10.17-dind
             name: docker
             securityContext:
               privileged: true
