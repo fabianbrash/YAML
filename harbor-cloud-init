@@ -1,0 +1,44 @@
+#cloud-config
+## Required syntax at the start of user-data file
+## Create a user called centos and give a password of VMware1! and set it to not expire
+chpasswd:
+    list: |
+      frjb:VMware1!
+    expire: false
+## Create a docker user group on the OS
+groups:
+  - docker
+users:
+## Create the default user for the OS
+  - default
+## Customise the centos user created above by adding an SSH key that's allowed to login to the VM
+## In this case, it's the SSH public key of my laptop
+  - name: frjb
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDotrYL0dWisgwtP1mpzNW60hGGlkKwrAebSFLw89CmMhjMFefGFt2SpwzMsbzjmjZBWiDui62eHfAgqkCIWlIslPRsuZUqIFghVE5SW/rkT0w41KNONH8lN6e1/Mr1CEBUqOoz+0ysGmXEJtbtg0OjdMWuRwTB11G1Lwvyyny5IgiAf+iowBhJ7vU0F78u24c9oS7Cs1SHe/Gf4IL00Kqhep+JuJPsLcZRelriKFpHMjtQJBPydtTZ12oOS3KugSfHEEIIFiONveG+UdVQWkN2HkBIWoyh0oYN4nvEvT/qmumAdR+OJU4lw13041vyPv0QiTYN1mgdybEDDpWIi3X4mhLd38kGkda3UgMFG+efcrd2WFz1M7EuyJnjXw8TecY2UaLW0Ab1evvk14n8teH6/hySOEGF/PJ/FOpGMRxhE5Q95gz+0RC8iOeWHfP6VV7asskY9hw3BUNFOU33W5YM1r+3q+hbcb7d2I0Wmh9Zk5BFYaQOjUp8VQuO9WTeQxE= bfabian@bfabian-a01.vmware.com
+## Add the centos user to the sudo group and allow it to escalate to sudo without a password
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: sudo, docker
+## Set the default shell of the user to bash
+    shell: /bin/bash
+## Enable DHCP on the default network interface provisioned in the VM
+network:
+  version: 2
+  ethernets:
+      ens192:
+          dhcp4: true
+package_update: true
+
+packages:
+  - net-tools
+  - curl 
+  - wget 
+  - vim
+  - yum-utils
+
+
+runcmd:
+  - yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  - sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
+  - systemctl enable docker && systemctl start docker
+  - docker pull harbor.fbclouddemo.us/publicimages/alpine@sha256:1304f174557314a7ed9eddb4eab12fed12cb0cd9809e4c28f29af86979a3c870
