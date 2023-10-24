@@ -42,3 +42,11 @@ runcmd:
   - sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
   - systemctl enable docker && systemctl start docker
   - docker pull harbor.fbclouddemo.us/publicimages/alpine@sha256:1304f174557314a7ed9eddb4eab12fed12cb0cd9809e4c28f29af86979a3c870
+  - mkdir -p /home/frjb/harbor
+  - sudo mkdir /data 
+  - printf 'o\nn\np\n1\n\n\nw' | sudo fdisk /dev/sdb
+  - sudo mkfs.xfs /dev/sdb1
+  - sudo mount /dev/sdb1 /data
+  - cd /home/frjb/harbor && curl -LO https://github.com/goharbor/harbor/releases/download/v2.9.0/harbor-offline-installer-v2.9.0.tgz
+  - cd /home/frjb && touch add_to_etc_fstab && echo '/dev/sdb1     /data      xfs    defaults         1 2' >> add_to_etc_fstab
+  - sudo echo '/dev/sdb1     /data      xfs    defaults         1 2' >> /etc/fstab
