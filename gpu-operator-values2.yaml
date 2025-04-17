@@ -1,0 +1,49 @@
+## Custom values for gpu-operator.
+
+## Set to false if Node Feature Discovery is already deployed in the cluster
+nfd:
+  enabled: true
+
+operator:
+  ## Update the default runtime if using cri-o or containerd
+  defaultRuntime: containerd
+
+mig:
+  ## Update the MIG strategy here if your hardware supports MIG
+  strategy: none
+
+## Update driver repository, image, version, ... if you want to use custom driver container images or NVIDIA vGPUs
+## The GPU Operator with NVIDIA vGPUs requires additional steps to build a private driver image here:
+## https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/install-gpu-operator-vgpu.html#considerations-to-install-gpu-operator-with-nvidia-vgpu-driver
+driver:
+  ## Enable deploying NVIDIA Driver. Use "enabled: false" if NVIDIA driver software has been installed in the node.
+  ## For EKS cluster with node group using GPU instance, the Amazon EKS AMI has the NVIDIA driver installed by default. In this case, use "enabled: false" to not deploy the driver
+  enabled: false
+  repository: nvcr.io/nvidia
+  image: driver
+  version: "570.86.15"
+  imagePullPolicy: IfNotPresent
+  imagePullSecrets: []
+  # vGPU licensing configuration
+  licensingConfig:
+    configMapName: ""
+    nlsEnabled: false
+  # vGPU topology daemon configuration
+  virtualTopology:
+    config: ""
+
+## Enable/Disable container toolkit
+toolkit:
+  enabled: true
+
+## Enable/Disable dcgm
+dcgm:
+  enabled: true
+
+## Enable/Disable MIG Manager.Enable this only if your hardware supports MIG
+migManager:
+  enabled: false
+
+## Enable/Disable nodeStatusExporter
+nodeStatusExporter:
+  enabled: false
