@@ -23,6 +23,7 @@ migManager:
     create: true
     name: h100-mig-config
     # We leave 'default' empty or set to 'all-disabled' to avoid Helm validation errors
+    # THIS ASSUMES WE HAVE AN H100 80GB GPU
     default: "all-disabled"
     data:
       config.yaml: |
