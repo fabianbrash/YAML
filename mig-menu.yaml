@@ -1,0 +1,31 @@
+migManager:
+  enabled: true
+  config:
+    create: true
+    name: h100-mig-config
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+          # Recipe 1: Max density
+          all-1g-7-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
+
+          # Recipe 2: Balanced Large
+          two-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 2
+
+          # Recipe 3: The "Combo" (1 Large for Dev, 4 Small for Inference)
+          # Total Compute Slices: 3 + (1*4) = 7
+          mixed-workload:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 1
+                "1g.10gb": 4
