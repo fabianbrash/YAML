@@ -1,0 +1,27 @@
+nfd:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
+
+mig:
+  strategy: mixed  # Use mixed to see the specific resource name
+
+migManager:
+  enabled: true
+  config:
+    create: true
+    name: h100-mig-config
+    # REMOVED: 'default: all-1g-11gb' to avoid the validation error
+    # kubectl label node node-1 nvidia.com/mig.config:all-1g-7-slices note the name comes from what you have below all-1g-7-slices
+    # Also this is a newer config and creates the config map for us inline below
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+          # Change profile name to the standard 1g.10gb
+          all-1g-7-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
