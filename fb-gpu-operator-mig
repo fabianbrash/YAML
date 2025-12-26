@@ -1,0 +1,20 @@
+nfd:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
+
+driver:
+  enabled: true
+
+toolkit:
+  enabled: true
+
+dcgm:
+  enabled: true
+
+mig:
+  strategy: single
+
+migManager:
+  enabled: true
