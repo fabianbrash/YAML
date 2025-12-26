@@ -1,31 +1,58 @@
+nfd:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
+
+driver:
+  enabled: true
+
+toolkit:
+  enabled: true
+
+dcgm:
+  enabled: true
+
+mig:
+  # Using 'mixed' allows you to see specific resource names like nvidia.com/mig-1g.10gb
+  strategy: mixed
+
 migManager:
   enabled: true
   config:
     create: true
     name: h100-mig-config
+    # We leave 'default' empty or set to 'all-disabled' to avoid Helm validation errors
+    default: "all-disabled"
     data:
       config.yaml: |
         version: v1
         mig-configs:
-          # Recipe 1: Max density, node label nvidia.com/mig.config=all-1g-7-slices
+          # Configuration 1: Maximum Density (7 small slices), label node kubectl label node <node-name> nvidia.com/mig.config=all-1g-7-slices
           all-1g-7-slices:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "1g.10gb": 7
 
-          # Recipe 2: Balanced Large, node label nvidia.com/mig.config=two-large-slices
+          # Configuration 2: Two Large Slices (40GB each), label node kubectl label node <node-name> nvidia.com/mig.config=two-large-slices
           two-large-slices:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "3g.40gb": 2
 
-          # Recipe 3: The "Combo" (1 Large for Dev, 4 Small for Inference)
-          # Total Compute Slices: 3 + (1*4) = 7, node label nvidia.com/mig.config=mixed-workload
+          # Configuration 3: Balanced/Mixed (1 Large + 4 Small), labe node kubectl label node <node-name> nvidia.com/mig.config=mixed-workload
           mixed-workload:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "3g.40gb": 1
                 "1g.10gb": 4
+
+          # Configuration 4: Single Large Compute (1 very beefy slice), label node kubectl label node <node-name> nvidia.com/mig.config=single-4g-slice
+          single-4g-slice:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "4g.40gb": 1
