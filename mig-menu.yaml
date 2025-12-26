@@ -7,14 +7,14 @@ migManager:
       config.yaml: |
         version: v1
         mig-configs:
-          # Recipe 1: Max density
+          # Recipe 1: Max density, node label nvidia.com/mig.config=all-1g-7-slices
           all-1g-7-slices:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "1g.10gb": 7
 
-          # Recipe 2: Balanced Large
+          # Recipe 2: Balanced Large, node label nvidia.com/mig.config=two-large-slices
           two-large-slices:
             - devices: all
               mig-enabled: true
@@ -22,7 +22,7 @@ migManager:
                 "3g.40gb": 2
 
           # Recipe 3: The "Combo" (1 Large for Dev, 4 Small for Inference)
-          # Total Compute Slices: 3 + (1*4) = 7
+          # Total Compute Slices: 3 + (1*4) = 7, node label nvidia.com/mig.config=mixed-workload
           mixed-workload:
             - devices: all
               mig-enabled: true
