@@ -1,0 +1,124 @@
+nfd:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
+
+driver:
+  enabled: true
+
+toolkit:
+  enabled: true
+
+dcgm:
+  enabled: true
+
+mig:
+  # 'mixed' allows specific resource names (e.g., nvidia.com/mig-1g.25gb)
+  strategy: mixed
+
+migManager:
+  enabled: true
+  config:
+    create: true
+    name: multi-card-mig-config
+    default: "all-disabled"
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+          # =======================================================
+          #  A100 80GB CONFIGURATIONS
+          # =======================================================
+          a100-80gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
+
+          a100-80gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 2
+
+          a100-80gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 1
+                "1g.10gb": 4
+
+          # =======================================================
+          #  H100 80GB CONFIGURATIONS
+          # =======================================================
+          h100-80gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
+
+          h100-80gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 2
+
+          h100-80gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 1
+                "1g.10gb": 4
+
+          # =======================================================
+          #  H200 141GB CONFIGURATIONS
+          # =======================================================
+          h200-141gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.18gb": 7
+
+          h200-141gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.71gb": 2
+
+          h200-141gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.71gb": 1
+                "1g.18gb": 4
+
+          # =======================================================
+          #  B200 180GB (Blackwell) CONFIGURATIONS
+          #  (Note: B200 has ~180GB, so 1/7th slice is ~25GB)
+          # =======================================================
+          
+          # Option 1: B200 Max Density (7 slices of ~25GB each)
+          # Use Case: Running 7x Llama-3-8B models on a single card
+          b200-180gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.25gb": 7
+
+          # Option 2: B200 Big Compute (2 massive ~90GB slices)
+          # Use Case: Fine-tuning 70B+ parameter models
+          b200-180gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.90gb": 2
+
+          # Option 3: B200 Mixed (1 Big Dev + 4 Large Inference)
+          # Use Case: One heavy training job + 4 inference endpoints
+          b200-180gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.90gb": 1
+                "1g.25gb": 4
