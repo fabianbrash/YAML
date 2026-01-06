@@ -14,7 +14,7 @@ dcgm:
   enabled: true
 
 mig:
-  # 'mixed' strategy is required for granular control
+  # 'mixed' strategy is required for granular control request in pods like 'mig-3g.20gb'
   strategy: mixed
 
 migManager:
@@ -34,14 +34,14 @@ migManager:
           #  OR nvidia.com/mig.config:a100-40gb-large-slices
           # =======================================================
           
-          # Option 1: A100 40GB Max Density (7 tiny slices)
+          # Option 1: A100 40GB Max Density (7 tiny slices) pod request: 'mig-1g.5gb'
           a100-40gb-max-density:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "1g.5gb": 7
 
-          # Option 2: A100 40GB Large Slices (2 slices of 20GB)
+          # Option 2: A100 40GB Large Slices (2 slices of 20GB) pod request: 'mig-3g.20gb'
           a100-40gb-large-slices:
             - devices: all
               mig-enabled: true
@@ -60,6 +60,7 @@ migManager:
           #  A100 80GB CONFIGURATIONS
           #  EXAMPLE NODE LABLE(s): nvidia.com/mig.config:a100-80gb-max-density
           #  OR nvidia.com/mig.config:a100-80gb-mixed
+          #  POD REQUEST EXAMPLE: 'mig-1g.10gb' 
           # =======================================================
           a100-80gb-max-density:
             - devices: all
@@ -84,6 +85,7 @@ migManager:
           #  H100 80GB CONFIGURATIONS
           #  EXAMPLE NODE LABLE(s): nvidia.com/mig.config:h100-80gb-max-density
           #  OR nvidia.com/mig.config:h100-80gb-large-slices
+          #  POD REQUEST EXAMPLE: 'mig-3g.40gb'
           # =======================================================
           h100-80gb-max-density:
             - devices: all
@@ -106,6 +108,7 @@ migManager:
 
           # =======================================================
           #  H200 141GB CONFIGURATIONS
+          #  POD REQUEST EXAMPLE: 'mig-3g.71gb'
           # =======================================================
           h200-141gb-max-density:
             - devices: all
