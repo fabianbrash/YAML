@@ -14,7 +14,7 @@ dcgm:
   enabled: true
 
 mig:
-  # 'mixed' allows specific resource names (e.g., nvidia.com/mig-1g.25gb)
+  # 'mixed' strategy is required for granular control
   strategy: mixed
 
 migManager:
@@ -28,9 +28,38 @@ migManager:
         version: v1
         mig-configs:
           # =======================================================
+          #  A100 40GB CONFIGURATIONS
+          #  (Note: Slice sizes are half of the 80GB card)
+          #  EXAMPLE NODE LABLE(s): nvidia.com/mig.config:a100-40gb-max-density
+          #  OR nvidia.com/mig.config:a100-40gb-large-slices
+          # =======================================================
+          
+          # Option 1: A100 40GB Max Density (7 tiny slices)
+          a100-40gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.5gb": 7
+
+          # Option 2: A100 40GB Large Slices (2 slices of 20GB)
+          a100-40gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.20gb": 2
+
+          # Option 3: A100 40GB Mixed (1 Medium Dev + 4 Small Inference)
+          a100-40gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.20gb": 1
+                "1g.5gb": 4
+
+          # =======================================================
           #  A100 80GB CONFIGURATIONS
-          #  LABEL: nvidia.com/mig.config:a100-80gb-max-density
-          #  OR:    nvidia.com/mig.config:a100-80gb-large-slices
+          #  EXAMPLE NODE LABLE(s): nvidia.com/mig.config:a100-80gb-max-density
+          #  OR nvidia.com/mig.config:a100-80gb-mixed
           # =======================================================
           a100-80gb-max-density:
             - devices: all
@@ -53,8 +82,8 @@ migManager:
 
           # =======================================================
           #  H100 80GB CONFIGURATIONS
-          #  LABEL: nvidia.com/mig.config:h100-80gb-max-density
-          #  OR:    nvidia.com/mig.config:h100-80gb-mixed
+          #  EXAMPLE NODE LABLE(s): nvidia.com/mig.config:h100-80gb-max-density
+          #  OR nvidia.com/mig.config:h100-80gb-large-slices
           # =======================================================
           h100-80gb-max-density:
             - devices: all
@@ -77,8 +106,6 @@ migManager:
 
           # =======================================================
           #  H200 141GB CONFIGURATIONS
-          #  LABEL: nvidia.com/mig.config:h200-141gb-max-density
-          #  OR:    nvidia.com/mig.config:h200-141gb-large-slices
           # =======================================================
           h200-141gb-max-density:
             - devices: all
@@ -101,29 +128,19 @@ migManager:
 
           # =======================================================
           #  B200 180GB (Blackwell) CONFIGURATIONS
-          #  (Note: B200 has ~180GB, so 1/7th slice is ~25GB)
-          #  LABEL: nvidia.com/mig.config:b200-180gb-large-slices
-          #  OR:    nvidia.com/mig.config:b200-180gb-mixed
           # =======================================================
-          
-          # Option 1: B200 Max Density (7 slices of ~25GB each)
-          # Use Case: Running 7x Llama-3-8B models on a single card
           b200-180gb-max-density:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "1g.25gb": 7
 
-          # Option 2: B200 Big Compute (2 massive ~90GB slices)
-          # Use Case: Fine-tuning 70B+ parameter models
           b200-180gb-large-slices:
             - devices: all
               mig-enabled: true
               mig-devices:
                 "3g.90gb": 2
 
-          # Option 3: B200 Mixed (1 Big Dev + 4 Large Inference)
-          # Use Case: One heavy training job + 4 inference endpoints
           b200-180gb-mixed:
             - devices: all
               mig-enabled: true
