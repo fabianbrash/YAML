@@ -29,7 +29,8 @@ migManager:
         mig-configs:
           # =======================================================
           #  A100 80GB CONFIGURATIONS
-          #  LABEL: nvidia.com/mig.config:a100-80gb-max-density 
+          #  LABEL: nvidia.com/mig.config:a100-80gb-max-density
+          #  OR:    nvidia.com/mig.config:a100-80gb-large-slices
           # =======================================================
           a100-80gb-max-density:
             - devices: all
@@ -52,7 +53,8 @@ migManager:
 
           # =======================================================
           #  H100 80GB CONFIGURATIONS
-          #  LABEL: nvidia.com/mig.config:h100-80gb-max-density  
+          #  LABEL: nvidia.com/mig.config:h100-80gb-max-density
+          #  OR:    nvidia.com/mig.config:h100-80gb-mixed
           # =======================================================
           h100-80gb-max-density:
             - devices: all
@@ -76,6 +78,7 @@ migManager:
           # =======================================================
           #  H200 141GB CONFIGURATIONS
           #  LABEL: nvidia.com/mig.config:h200-141gb-max-density
+          #  OR:    nvidia.com/mig.config:h200-141gb-large-slices
           # =======================================================
           h200-141gb-max-density:
             - devices: all
@@ -100,6 +103,7 @@ migManager:
           #  B200 180GB (Blackwell) CONFIGURATIONS
           #  (Note: B200 has ~180GB, so 1/7th slice is ~25GB)
           #  LABEL: nvidia.com/mig.config:b200-180gb-large-slices
+          #  OR:    nvidia.com/mig.config:b200-180gb-mixed
           # =======================================================
           
           # Option 1: B200 Max Density (7 slices of ~25GB each)
