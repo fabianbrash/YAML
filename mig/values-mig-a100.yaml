@@ -1,0 +1,93 @@
+# =============================================================================
+# values-mig-a100.yaml
+# MIG configurations for NVIDIA A100 GPUs (40GB and 80GB variants).
+#
+# Minimum driver version: 450.80.02
+# Tested stable up to: 535.x+
+#
+# Node label to activate a config:
+#   kubectl label node <node> nvidia.com/mig.config=<config-name>
+#
+# Example pod resource requests:
+#   A100 40GB:  nvidia.com/mig-1g.5gb, nvidia.com/mig-3g.20gb
+#   A100 80GB:  nvidia.com/mig-1g.10gb, nvidia.com/mig-3g.40gb
+# =============================================================================
+
+migManager:
+  config:
+    create: true
+    name: a100-mig-config
+    default: "all-disabled"
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+
+          # -------------------------------------------------------------------
+          #  A100 40GB CONFIGURATIONS
+          #  Requires driver >= 450.80.02
+          #  Note: Slice sizes are half those of the 80GB variant.
+          # -------------------------------------------------------------------
+
+          # Max density: 7 x 1g.5gb (5GB each, 7 compute instances)
+          # Node label:  nvidia.com/mig.config=a100-40gb-max-density
+          # Pod request: nvidia.com/mig-1g.5gb: 1
+          a100-40gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.5gb": 7
+
+          # Large slices: 2 x 3g.20gb (20GB each, 3 SM partitions each)
+          # Node label:  nvidia.com/mig.config=a100-40gb-large-slices
+          # Pod request: nvidia.com/mig-3g.20gb: 1
+          a100-40gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.20gb": 2
+
+          # Mixed: 1 large (training) + 4 small (inference)
+          # Total: 20GB + (4 x 5GB) = 40GB
+          # Node label:  nvidia.com/mig.config=a100-40gb-mixed
+          # Pod request: nvidia.com/mig-3g.20gb: 1  OR  nvidia.com/mig-1g.5gb: 1
+          a100-40gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.20gb": 1
+                "1g.5gb": 4
+
+          # -------------------------------------------------------------------
+          #  A100 80GB CONFIGURATIONS
+          #  Requires driver >= 450.80.02
+          # -------------------------------------------------------------------
+
+          # Max density: 7 x 1g.10gb (10GB each, 7 compute instances)
+          # Node label:  nvidia.com/mig.config=a100-80gb-max-density
+          # Pod request: nvidia.com/mig-1g.10gb: 1
+          a100-80gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
+
+          # Large slices: 2 x 3g.40gb (40GB each, 3 SM partitions each)
+          # Node label:  nvidia.com/mig.config=a100-80gb-large-slices
+          # Pod request: nvidia.com/mig-3g.40gb: 1
+          a100-80gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 2
+
+          # Mixed: 1 large (training) + 4 small (inference)
+          # Total: 40GB + (4 x 10GB) = 80GB
+          # Node label:  nvidia.com/mig.config=a100-80gb-mixed
+          # Pod request: nvidia.com/mig-3g.40gb: 1  OR  nvidia.com/mig-1g.10gb: 1
+          a100-80gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 1
+                "1g.10gb": 4

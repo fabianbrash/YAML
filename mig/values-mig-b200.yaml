@@ -1,0 +1,76 @@
+# =============================================================================
+# values-mig-b200.yaml
+# MIG configurations for NVIDIA B200 (Blackwell, 180GB) GPUs.
+#
+# ⚠️  EXPERIMENTAL — USE WITH CAUTION
+#
+# Blackwell MIG support is still maturing. Profile names and slice sizes
+# may differ between driver releases. Always verify available profiles on
+# your target nodes before applying:
+#
+#   nvidia-smi mig -lgip
+#
+# Minimum driver version: 550.54.15 (Blackwell GA)
+# Recommended driver version: 560.x+ for best Blackwell MIG stability
+#
+# ⚠️  Do NOT apply to non-B200 nodes — profile names like 3g.90gb will
+#     not be recognized and the MIG manager will enter an error state.
+#
+# Node label to activate a config:
+#   kubectl label node <node> nvidia.com/mig.config=<config-name>
+#
+# Example pod resource requests:
+#   nvidia.com/mig-1g.25gb: 1
+#   nvidia.com/mig-3g.90gb: 1
+# =============================================================================
+
+migManager:
+  config:
+    create: true
+    name: b200-mig-config
+    default: "all-disabled"
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+
+          # -------------------------------------------------------------------
+          #  B200 180GB CONFIGURATIONS (Blackwell)
+          #  Requires driver >= 550.54.15
+          #
+          #  ⚠️  Profile name accuracy: verify with `nvidia-smi mig -lgip`
+          #     on your actual hardware before deploying. The profiles below
+          #     (1g.25gb, 3g.90gb) are based on early Blackwell documentation
+          #     and may not match your driver's exposed profile names exactly.
+          # -------------------------------------------------------------------
+
+          # Max density: 7 x 1g.25gb (~175GB, ~5GB reserved by MIG engine)
+          # ⚠️  Verify: some driver versions may expose 1g.22gb instead of 1g.25gb
+          # Node label:  nvidia.com/mig.config=b200-180gb-max-density
+          # Pod request: nvidia.com/mig-1g.25gb: 1
+          b200-180gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.25gb": 7
+
+          # Large slices: 2 x 3g.90gb (90GB each)
+          # Node label:  nvidia.com/mig.config=b200-180gb-large-slices
+          # Pod request: nvidia.com/mig-3g.90gb: 1
+          b200-180gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.90gb": 2
+
+          # Mixed: 1 large (training) + 4 small (inference)
+          # Total: 90GB + (4 x 25GB) = 190GB — fits within 180GB with MIG alignment overhead
+          # ⚠️  Validate this profile combination against your driver before deploying
+          # Node label:  nvidia.com/mig.config=b200-180gb-mixed
+          # Pod request: nvidia.com/mig-3g.90gb: 1  OR  nvidia.com/mig-1g.25gb: 1
+          b200-180gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.90gb": 1
+                "1g.25gb": 4

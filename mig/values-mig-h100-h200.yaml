@@ -1,0 +1,99 @@
+# =============================================================================
+# values-mig-h100-h200.yaml
+# MIG configurations for NVIDIA H100 (80GB) and H200 (141GB) GPUs.
+#
+# H100 minimum driver version: 515.43.04
+# H200 minimum driver version: 525.85.12
+#
+# ⚠️  WARNING: Do NOT apply this file to environments running drivers < 515.x.
+#     The MIG manager will fail to apply the config and nodes may become stuck.
+#
+# Node label to activate a config:
+#   kubectl label node <node> nvidia.com/mig.config=<config-name>
+#
+# Example pod resource requests:
+#   H100:  nvidia.com/mig-1g.10gb, nvidia.com/mig-3g.40gb
+#   H200:  nvidia.com/mig-1g.18gb, nvidia.com/mig-3g.71gb
+# =============================================================================
+
+migManager:
+  config:
+    create: true
+    name: h100-h200-mig-config
+    default: "all-disabled"
+    data:
+      config.yaml: |
+        version: v1
+        mig-configs:
+
+          # -------------------------------------------------------------------
+          #  H100 80GB CONFIGURATIONS
+          #  Requires driver >= 515.43.04
+          #  Note: Profile names are identical to A100 80GB (1g.10gb, 3g.40gb)
+          #  but are applied to H100 hardware — this is expected and correct.
+          # -------------------------------------------------------------------
+
+          # Max density: 7 x 1g.10gb (10GB each, 7 compute instances)
+          # Node label:  nvidia.com/mig.config=h100-80gb-max-density
+          # Pod request: nvidia.com/mig-1g.10gb: 1
+          h100-80gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.10gb": 7
+
+          # Large slices: 2 x 3g.40gb (40GB each, 3 SM partitions each)
+          # Node label:  nvidia.com/mig.config=h100-80gb-large-slices
+          # Pod request: nvidia.com/mig-3g.40gb: 1
+          h100-80gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 2
+
+          # Mixed: 1 large (training) + 4 small (inference)
+          # Total: 40GB + (4 x 10GB) = 80GB
+          # Node label:  nvidia.com/mig.config=h100-80gb-mixed
+          # Pod request: nvidia.com/mig-3g.40gb: 1  OR  nvidia.com/mig-1g.10gb: 1
+          h100-80gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.40gb": 1
+                "1g.10gb": 4
+
+          # -------------------------------------------------------------------
+          #  H200 141GB CONFIGURATIONS
+          #  Requires driver >= 525.85.12
+          #  ⚠️  Do NOT apply to nodes running driver < 525.x — profile names
+          #     like 3g.71gb and 1g.18gb will not be recognized.
+          # -------------------------------------------------------------------
+
+          # Max density: 7 x 1g.18gb (~126GB total, ~15GB reserved by MIG engine)
+          # Node label:  nvidia.com/mig.config=h200-141gb-max-density
+          # Pod request: nvidia.com/mig-1g.18gb: 1
+          h200-141gb-max-density:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "1g.18gb": 7
+
+          # Large slices: 2 x 3g.71gb (71GB each)
+          # Node label:  nvidia.com/mig.config=h200-141gb-large-slices
+          # Pod request: nvidia.com/mig-3g.71gb: 1
+          h200-141gb-large-slices:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.71gb": 2
+
+          # Mixed: 1 large (training) + 4 small (inference)
+          # Total: 71GB + (4 x 18GB) = 143GB (within H200 capacity with MIG overhead)
+          # Node label:  nvidia.com/mig.config=h200-141gb-mixed
+          # Pod request: nvidia.com/mig-3g.71gb: 1  OR  nvidia.com/mig-1g.18gb: 1
+          h200-141gb-mixed:
+            - devices: all
+              mig-enabled: true
+              mig-devices:
+                "3g.71gb": 1
+                "1g.18gb": 4

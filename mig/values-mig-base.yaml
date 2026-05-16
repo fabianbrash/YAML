@@ -1,0 +1,33 @@
+# =============================================================================
+# values-mig-base.yaml
+# Base NVIDIA GPU Operator values shared across all MIG configurations.
+# Apply this first, then layer a GPU-specific values file on top.
+#
+# Usage (Helm):
+#   helm upgrade --install gpu-operator nvidia/gpu-operator \
+#     -f values-mig-base.yaml \
+#     -f values-mig-a100.yaml   # <- layer your GPU-specific file
+# =============================================================================
+
+nfd:
+  enabled: true
+
+operator:
+  defaultRuntime: containerd
+
+driver:
+  enabled: true
+
+toolkit:
+  enabled: true
+
+dcgm:
+  enabled: true
+
+mig:
+  # 'mixed' strategy is required for granular per-pod MIG resource requests
+  # e.g. resources: limits: nvidia.com/mig-3g.20gb: 1
+  strategy: mixed
+
+migManager:
+  enabled: true
