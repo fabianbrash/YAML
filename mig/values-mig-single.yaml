@@ -1,0 +1,39 @@
+## Custom values for gpu-operator.
+## Set to false if Node Feature Discovery is already deployed in the cluster
+nfd:
+  enabled: true
+operator:
+  ## Update the default runtime if using cri-o or containerd
+  defaultRuntime: containerd
+mig:
+  ## Update the MIG strategy here if your hardware supports MIG
+  # strategy: none
+  ## Enable MIG
+  ## node label: nvidia.com/mig.config=all-enabled
+  strategy: single
+  single:
+    migProfile: "1g.20gb"
+## Update driver repository, image, version, ... if you want to use custom driver container images or NVIDIA vGPUs
+driver:
+  enabled: false
+## Enable/Disable container toolkit
+toolkit:
+  enabled: true
+## Enable/Disable dcgm
+dcgm:
+  enabled: true
+## Enable/Disable MIG Manager. Enable this only if your hardware supports MIG
+migManager:
+  enabled: true
+  env:
+    - name: WITH_REBOOT
+      value: "true"
+## Enable/Disable nodeStatusExporter
+nodeStatusExporter:
+  enabled: false
+## devicePlugin for mig
+## add node label nvidia.com/mig.config=all-enabled for single
+devicePlugin:
+  enabled: true
+  config:
+    migStrategy: single
