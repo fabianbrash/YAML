@@ -9,10 +9,10 @@ mig:
   ## Update the MIG strategy here if your hardware supports MIG
   # strategy: none
   ## Enable MIG
-  ## node label: nvidia.com/mig.config=all-enabled
+  ## node label: nvidia.com/mig.configall-3g.20gb
   strategy: single
   single:
-    migProfile: "1g.20gb"
+    migProfile: "3g.20gb"
 ## Update driver repository, image, version, ... if you want to use custom driver container images or NVIDIA vGPUs
 driver:
   enabled: false
